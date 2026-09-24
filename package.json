@@ -1,0 +1,9 @@
+{
+  "name": "limuvo-curseforge-api-example",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Minimal server-side example of Limuvo's CurseForge modpack catalog integration",
+  "type": "module",
+  "engines": { "node": ">=20" },
+  "scripts": { "test": "node --test" }
+}
