@@ -1,18 +1,40 @@
-# Limuvo | CurseForge API integration example
+# Limuvo | CurseForge API integration
 
-This repository contains a small, isolated example of how Limuvo uses the official CurseForge Core API to search Minecraft modpacks.
+This repository describes Limuvo’s CurseForge integration for an API access request. It contains a small, isolated example of the API call used by Limuvo, not the source code for the full hosting platform.
 
-## What the integration does
+## About Limuvo
 
-- Sends a server-side `GET` request to `https://api.curseforge.com/v1/mods/search`.
-- Authenticates with the `x-api-key` request header. The key is read from `CURSEFORGE_API_KEY` and must never be exposed in browser code or committed to Git.
-- Searches Minecraft modpacks (`gameId=432`, `classId=4471`), returning up to 50 results sorted by downloads.
-- Uses only the project ID, name, summary, download count, icon URL, and official CurseForge project URL.
-- Links users to CurseForge for the pack. This example does not download or redistribute mod files, and does not automatically install CurseForge packs.
+Limuvo provides game server hosting and a management panel for customers:
 
-In Limuvo Panel, this functionality is called by an authenticated backend route. The browser never receives the API key. The wider panel, customer data, billing, provisioning, and infrastructure code are intentionally not part of this repository.
+https://limuvo.com/
 
-## Run
+The CurseForge integration is part of Limuvo’s hosting service. Limuvo sells hosting services, not CurseForge projects or files.
+
+## Current integration
+
+An authenticated Limuvo Panel customer can search the Minecraft modpack catalog. The panel’s backend sends a server-side request to the official CurseForge Core API endpoint `GET https://api.curseforge.com/v1/mods/search`, using Minecraft game ID `432` and the modpack class ID `4471`.
+
+The panel uses the returned project ID, name, summary, download count, icon URL, and official CurseForge project URL to show search results and link customers to the project on CurseForge.
+
+The current CurseForge integration is catalog-only. It does not download or automatically install CurseForge files. Customers who want a CurseForge pack installed currently receive installation assistance from Limuvo support.
+
+## Intended use if API access is approved
+
+Limuvo would like to explore adding a workflow for selecting a compatible Minecraft server-pack version and installing it on the customer’s own game server. This feature is not currently implemented for CurseForge. We will only build it after confirming that the proposed use is permitted by CurseForge’s API terms and the relevant project’s distribution settings.
+
+Limuvo will respect CurseForge and project-author restrictions. We will not mirror or redistribute files where third-party distribution is not allowed. If a project cannot be installed through an approved third-party flow, customers will be directed to the official CurseForge page or Limuvo support instead.
+
+The current catalog shows each project’s name and official CurseForge link. If an installation workflow is approved and implemented, Limuvo intends to show project and author attribution using the information available through the API.
+
+## API credentials and customer data
+
+The API key is supplied through the server-side `CURSEFORGE_API_KEY` environment variable and sent in the `x-api-key` request header. It is not included in browser code or this repository. The isolated example uses a placeholder only; no production key or customer data is present here.
+
+## Source code scope
+
+This private repository contains the small API example and documentation relevant to this request. Limuvo’s full hosting platform and management panel are proprietary software. Their backend, billing, provisioning, infrastructure, and customer data are not included.
+
+## Run the example
 
 Requires Node.js 20 or later.
 
@@ -28,13 +50,13 @@ $env:CURSEFORGE_API_KEY = "your-key"
 node .\src\curseforge-modpacks.js "RLCraft"
 ```
 
-Run tests without an API key or network access:
+Run the tests without an API key or network access:
 
 ```sh
 npm test
 ```
 
-## Official references
+## References
 
 - [CurseForge REST API documentation](https://docs.curseforge.com/rest-api/)
 - [CurseForge API key application information](https://support.curseforge.com/support/solutions/articles/9000208346)
